@@ -1,0 +1,35 @@
+#docker-compose.yaml
+
+version: '3.3'
+
+services:
+  app:
+    build:
+      context: ./app
+    ports:
+      - "8089"
+    networks:
+      - my_network
+
+  redis:
+    build:
+      context: ./redis
+    ports:
+      - "6379"
+    networks:
+      - my_network
+    depends_on:
+      - app
+
+  nginx:
+    build:
+      context: ./nginx
+    ports:
+      - "8089:8089"
+    networks:
+      - my_network
+    depends_on:
+      - redis
+
+networks:
+  my_network:
